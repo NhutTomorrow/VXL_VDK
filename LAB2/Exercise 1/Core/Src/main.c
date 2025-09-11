@@ -37,6 +37,9 @@
 #define SEG2 1
 #define SEG3 2
 #define SEG4 3
+#define SMALL 0
+#define INIT 1
+#define BIG 2
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -50,6 +53,8 @@ void   updateClockBuffer () ;
 void updateLEDMatrix (int index );
 void init_matrix_led();
 void set_matrix_row(int index);
+void heartbeatAnimation();
+void displayFrame(uint8_t frame[8]);
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -58,7 +63,7 @@ TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN PV */
 uint8_t  counter = 0;
 uint8_t time = 0;
-uint8_t status = SEG1;
+uint8_t status = INIT;
 const int MAX_LED = 4;
 int index_led = 0;
 int led_buffer [4] = {1 , 2 , 3 , 4};
@@ -73,6 +78,26 @@ const int MAX_LED_MATRIX = 8;
 		  0x88, // 0b10001000
 		  0x88, // 0b10001000
 		  0x00   };
+ uint8_t heart_big[8] = {
+   0b00000000,
+   0b01100110,
+   0b11111111,
+   0b11111111,
+   0b01111110,
+   0b00111100,
+   0b00011000,
+   0b00000000
+ };
+ uint8_t heart_small[8] = {
+   0b00000000,
+   0b00000000,
+   0b01100110,
+   0b11111111,
+   0b01111110,
+   0b00011000,
+   0b00000000,
+   0b00000000
+ };
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -146,32 +171,47 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(timer0_flag){
-		  setTimer0(1000);
-		 second ++;
-
-		 if ( second >= 60) {
-		 second = 0;
-		minute ++;
-
-		 }
-		if( minute >= 60) {
-		 minute = 0;
-		hour ++;
-		}
-		if( hour >=24) {
-		 hour = 0;
-		 }
-		if(index_led >= 0 && index_led < 2) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, OFF);
-		if(index_led >= 2 && index_led <=3) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, ON);
-		updateClockBuffer () ;
-		update7SEG(index_led++);
-
-
-
+//	  if(timer0_flag){
+//		  setTimer0(1000);
+//		 second ++;
+//
+//		 if ( second >= 60) {
+//		 second = 0;
+//		minute ++;
+//
+//		 }
+//		if( minute >= 60) {
+//		 minute = 0;
+//		hour ++;
+//		}
+//		if( hour >=24) {
+//		 hour = 0;
+//		 }
+//		if(index_led >= 0 && index_led < 2) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, OFF);
+//		if(index_led >= 2 && index_led <=3) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, ON);
+//		updateClockBuffer () ;
+//		update7SEG(index_led++);
+//
+//
+//
+//	  }
+	  while(!timer0_flag);
+	  setTimer0(200);
+	  switch(status){
+	  case INIT:
+		  init_matrix_led();
+		  status = SMALL;
+		  break;
+	  case SMALL:
+		  displayFrame(heart_small);
+		  status = BIG;
+		  break;
+	  case BIG:
+		  displayFrame(heart_big);
+		  status = SMALL;
+		  break;
+	  default: break;
 	  }
-
-
 
     /* USER CODE END WHILE */
 
@@ -324,9 +364,31 @@ static void MX_GPIO_Init(void)
 {
 
 	 timer_run();
-	 updateLEDMatrix(index_led_matrix++);
+//	 updateLEDMatrix(index_led_matrix++);
+
 
 }
+
+ void displayFrame(uint8_t frame[8]){
+	 for(int i = 0; i < 8; i++) {
+	        set_matrix_row(frame[i]);  // Xuất dữ liệu dòng
+	        // Bật row tương ứng
+	       if(i < 2){
+	        HAL_GPIO_WritePin(GPIOA, (GPIO_PIN_2 << i), 0);
+	       }
+	       if(i >= 2){
+	    	   HAL_GPIO_WritePin(GPIOA, (GPIO_PIN_10 << (i - 2)) , 0);
+	       }
+
+	       // HAL_Delay(1); // giữ 1ms để mắt người kịp nhìn
+	        if(i < 2){
+	       	        HAL_GPIO_WritePin(GPIOA, (GPIO_PIN_2 << i), 1);
+	       	       }
+	       	       if(i >= 2){
+	       	    	   HAL_GPIO_WritePin(GPIOA, (GPIO_PIN_10 << (i - 2)) , 1);
+	       	       }
+	    }
+ }
  void updateLEDMatrix (int index ){
 	init_matrix_led();
 	 switch(index){
@@ -418,6 +480,11 @@ void exer4(){
 	 	 if(counter <= 0){
 	 		 counter = 50;
 	 	 switch(status){
+	 	 case INIT:
+	 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, OFF);
+	 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, OFF);
+	 		status = SEG1;
+	 		break;
 	 	 case SEG1:
 	 		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, ON); //Enable SEG7
 	 		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, OFF);
@@ -439,6 +506,15 @@ void exer4(){
 		 if(counter <= 0){
 			 counter = 50;
 		 switch(status){
+		 case INIT:
+			 //DISABLE ALL 7SEG
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, OFF);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, OFF);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, OFF);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, OFF);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, OFF);
+			 status = SEG1;
+			 break;
 		 case SEG1:
 			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, OFF);
 			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, ON); //Enable  1 SEG7
