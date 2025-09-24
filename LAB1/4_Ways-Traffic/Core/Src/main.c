@@ -39,6 +39,7 @@
 #define GREEN_LED GPIO_PIN_7
 #define ON 1
 #define OFF 0
+#define INIT 0
 #define RED 1
 #define YELLOW 2
 #define GREEN 3
@@ -55,7 +56,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t status = GREEN;
+uint8_t status = INIT;
 uint8_t counter = 0;
 /* USER CODE END PV */
 
@@ -64,6 +65,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 void display7SEG(int num);
+void init7SEG();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -107,12 +109,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  display7SEG(9 - counter);
+
 	  switch(status){
+	  case INIT:
+		  HAL_GPIO_WritePin(GPIOA, GREEN_LED2, ON);
+		  HAL_GPIO_WritePin(GPIOA, RED_LED2, ON);
+		  HAL_GPIO_WritePin(GPIOA, YELLOW_LED2, ON);
+		  HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
+		  HAL_GPIO_WritePin(GPIOA, RED_LED, ON);
+		  HAL_GPIO_WritePin(GPIOA, YELLOW_LED, ON);
+		  init7SEG();
+		  status = GREEN;
+		  counter = -1;
+		  break;
 	  case GREEN:
 		  HAL_GPIO_WritePin(GPIOA, GREEN_LED2, OFF);
 		  HAL_GPIO_WritePin(GPIOA, RED_LED2, ON);
 		  HAL_GPIO_WritePin(GPIOA, YELLOW_LED2, ON);
+		  display7SEG(9 - counter);
 		  if(counter < 2){
 			  HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
 			  HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
@@ -126,6 +140,7 @@ int main(void)
 		  HAL_GPIO_WritePin(GPIOA, GREEN_LED2, ON);
 		  HAL_GPIO_WritePin(GPIOA, RED_LED2, ON);
 		  HAL_GPIO_WritePin(GPIOA, YELLOW_LED2, OFF);
+		  display7SEG(9 - counter);
 		  if(counter >= 3 && counter < 4){
 			  HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
 			  HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
@@ -139,6 +154,7 @@ int main(void)
 		  HAL_GPIO_WritePin(GPIOA, GREEN_LED2, ON);
 		  HAL_GPIO_WritePin(GPIOA, RED_LED2, OFF);
 		  HAL_GPIO_WritePin(GPIOA, YELLOW_LED2, ON);
+		  display7SEG(9 - counter);
 		  if(counter >= 5 && counter < 8 ){
 			  HAL_GPIO_WritePin(GPIOA, GREEN_LED, OFF);
 			  HAL_GPIO_WritePin(GPIOA, RED_LED, ON);
@@ -248,6 +264,15 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void init7SEG(){
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, ON);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, ON);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, ON);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, ON);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, ON);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, ON);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, ON);
+}
 //a-0 b-1 c-2 d-3 e-4 f-5 g-6
 void display7SEG(int num){
 	switch(num){

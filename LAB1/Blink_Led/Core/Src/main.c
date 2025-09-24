@@ -34,8 +34,9 @@
 #define RED_LED GPIO_PIN_5
 #define YELLOW_LED GPIO_PIN_6
 #define GREEN_LED GPIO_PIN_7
-#define ON 1
-#define OFF 0
+#define ON 0
+#define OFF 1
+#define INIT 0
 #define RED 1
 #define YELLOW 2
 #define GREEN 3
@@ -50,8 +51,9 @@ void trafiicLight();
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t status = RED;
-uint8_t counter = 0;
+uint8_t status = INIT;
+uint8_t counter = 100;
+uint8_t time = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -95,7 +97,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  uint8_t counter = 0;
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,26 +106,11 @@ int main(void)
   while (1)
   {
     HAL_Delay(10);
-    counter++;
-    if (counter >= 200)
+    counter--;
+    if (counter <= 0 )
     {
-      counter = 0;
-      switch (status)
-      {
-      case RED:
-        HAL_GPIO_WritePin(GPIOA, RED_LED, ON);
-        HAL_GPIO_WritePin(GPIOA, YELLOW_LED, OFF);
-        status = YELLOW;
-
-        break;
-      case YELLOW:
-        HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
-        HAL_GPIO_WritePin(GPIOA, YELLOW_LED, ON);
-        status = RED;
-        break;
-      default:
-        break;
-      }
+      counter = 100;
+      trafiicLight();
     }
     /* USER CODE END WHILE */
 
@@ -199,6 +187,11 @@ void BlinkLed()
 {
   switch (status)
   {
+  case INIT:
+	  HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
+	  HAL_GPIO_WritePin(GPIOA, YELLOW_LED, OFF);
+	  status = RED;
+	  break;
   case RED:
     HAL_GPIO_WritePin(GPIOA, RED_LED, ON);
     HAL_GPIO_WritePin(GPIOA, YELLOW_LED, OFF);
@@ -213,34 +206,40 @@ void BlinkLed()
   default:
     break;
   }
-  HAL_Delay(2000);
+
 }
 void trafiicLight()
 {
   switch (status)
   {
+  case INIT:
+	  HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
+	     HAL_GPIO_WritePin(GPIOA, YELLOW_LED, OFF);
+	     HAL_GPIO_WritePin(GPIOA, GREEN_LED, OFF);
+	     status = RED;
+	     break;
   case RED:
-    HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
-    HAL_GPIO_WritePin(GPIOA, YELLOW_LED, ON);
-    HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
+    HAL_GPIO_WritePin(GPIOA, RED_LED, ON);
+    HAL_GPIO_WritePin(GPIOA, YELLOW_LED, OFF);
+    HAL_GPIO_WritePin(GPIOA, GREEN_LED, OFF);
 
-    if (counter == 4)
+    if (time == 4)
       status = YELLOW;
     break;
   case YELLOW:
-    HAL_GPIO_WritePin(GPIOA, RED_LED, ON);
-    HAL_GPIO_WritePin(GPIOA, YELLOW_LED, OFF);
-    HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
-    if (counter == 6)
+    HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
+    HAL_GPIO_WritePin(GPIOA, YELLOW_LED, ON);
+    HAL_GPIO_WritePin(GPIOA, GREEN_LED, OFF);
+    if (time == 6)
       status = GREEN;
     break;
   case GREEN:
-    HAL_GPIO_WritePin(GPIOA, RED_LED, ON);
-    HAL_GPIO_WritePin(GPIOA, YELLOW_LED, ON);
-    HAL_GPIO_WritePin(GPIOA, GREEN_LED, OFF);
-    if (counter == 9)
+    HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
+    HAL_GPIO_WritePin(GPIOA, YELLOW_LED, OFF);
+    HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
+    if (time == 9)
     {
-      counter = 0;
+      time = 0;
       status = RED;
     }
     break;
@@ -248,8 +247,7 @@ void trafiicLight()
   default:
     break;
   }
-  counter++;
-  HAL_Delay(1000);
+time++;
 }
 /* USER CODE END 4 */
 

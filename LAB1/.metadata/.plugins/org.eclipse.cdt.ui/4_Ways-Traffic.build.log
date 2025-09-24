@@ -1,10 +1,20 @@
-22:46:50 **** Incremental Build of configuration Debug for project 4_Ways-Traffic ****
+21:37:08 **** Incremental Build of configuration Debug for project 4_Ways-Traffic ****
 make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103x6 -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "4_Ways-Traffic.elf" @"objects.list"   -mcpu=cortex-m3 -T"D:\VXL_VDK_LAB\LAB1\4_Ways-Traffic\STM32F103C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="4_Ways-Traffic.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: 4_Ways-Traffic.elf
+ 
 arm-none-eabi-size  4_Ways-Traffic.elf 
+arm-none-eabi-objdump -h -S 4_Ways-Traffic.elf  > "4_Ways-Traffic.list"
+arm-none-eabi-objcopy  -O ihex 4_Ways-Traffic.elf  "4_Ways-Traffic.hex"
    text	   data	    bss	    dec	    hex	filename
-   5748	     24	   1576	   7348	   1cb4	4_Ways-Traffic.elf
+   5948	     20	   1572	   7540	   1d74	4_Ways-Traffic.elf
 Finished building: default.size.stdout
  
+Finished building: 4_Ways-Traffic.hex
+Finished building: 4_Ways-Traffic.list
+ 
+ 
 
-22:46:51 Build Finished. 0 errors, 0 warnings. (took 388ms)
+21:37:09 Build Finished. 0 errors, 0 warnings. (took 879ms)
 
