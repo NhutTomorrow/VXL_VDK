@@ -126,7 +126,7 @@ int main(void)
 		  HAL_GPIO_WritePin(GPIOA, GREEN_LED2, OFF);
 		  HAL_GPIO_WritePin(GPIOA, RED_LED2, ON);
 		  HAL_GPIO_WritePin(GPIOA, YELLOW_LED2, ON);
-		  display7SEG(9 - counter);
+		  display7SEG(3 - counter);
 		  if(counter < 2){
 			  HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
 			  HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);
@@ -140,7 +140,7 @@ int main(void)
 		  HAL_GPIO_WritePin(GPIOA, GREEN_LED2, ON);
 		  HAL_GPIO_WritePin(GPIOA, RED_LED2, ON);
 		  HAL_GPIO_WritePin(GPIOA, YELLOW_LED2, OFF);
-		  display7SEG(9 - counter);
+		  display7SEG(5 - counter);
 		  if(counter >= 3 && counter < 4){
 			  HAL_GPIO_WritePin(GPIOA, GREEN_LED, ON);
 			  HAL_GPIO_WritePin(GPIOA, RED_LED, OFF);

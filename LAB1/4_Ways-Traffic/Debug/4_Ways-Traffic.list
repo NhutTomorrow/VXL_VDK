@@ -183,10 +183,10 @@ int main(void)
  80001e0:	2108      	movs	r1, #8
  80001e2:	485f      	ldr	r0, [pc, #380]	; (8000360 <main+0x214>)
  80001e4:	f000 fe6a 	bl	8000ebc <HAL_GPIO_WritePin>
-		  display7SEG(9 - counter);
+		  display7SEG(3 - counter);
  80001e8:	4b5e      	ldr	r3, [pc, #376]	; (8000364 <main+0x218>)
  80001ea:	781b      	ldrb	r3, [r3, #0]
- 80001ec:	f1c3 0309 	rsb	r3, r3, #9
+ 80001ec:	f1c3 0303 	rsb	r3, r3, #3
  80001f0:	4618      	mov	r0, r3
  80001f2:	f000 f971 	bl	80004d8 <display7SEG>
 		  if(counter < 2){
@@ -238,10 +238,10 @@ int main(void)
  8000244:	2108      	movs	r1, #8
  8000246:	4846      	ldr	r0, [pc, #280]	; (8000360 <main+0x214>)
  8000248:	f000 fe38 	bl	8000ebc <HAL_GPIO_WritePin>
-		  display7SEG(9 - counter);
+		  display7SEG(5 - counter);
  800024c:	4b45      	ldr	r3, [pc, #276]	; (8000364 <main+0x218>)
  800024e:	781b      	ldrb	r3, [r3, #0]
- 8000250:	f1c3 0309 	rsb	r3, r3, #9
+ 8000250:	f1c3 0305 	rsb	r3, r3, #5
  8000254:	4618      	mov	r0, r3
  8000256:	f000 f93f 	bl	80004d8 <display7SEG>
 		  if(counter >= 3 && counter < 4){
