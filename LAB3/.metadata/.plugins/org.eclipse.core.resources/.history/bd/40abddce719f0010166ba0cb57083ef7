@@ -1,0 +1,492 @@
+/*
+ * traffic_light.c
+ *
+ *  Created on: Sep 26, 2025
+ *      Author: ASUS
+ */
+
+#include "traffic_light.h"
+
+uint8_t TRAFFIC_LIGHT_STATUS = INIT;
+
+uint8_t gre_time = 13;
+uint8_t red_time = 15;
+uint8_t yel_time = 2;
+
+uint8_t gre_temp_time = 13;
+uint8_t red_temp_time = 15;
+uint8_t yel_temp_time = 2;
+
+void traffic_light(){
+	switch(TRAFFIC_LIGHT_STATUS){
+		case INIT:
+			init_traffic();
+			TRAFFIC_LIGHT_STATUS = RED_GRE;
+			break;
+		case RED_GRE:
+			//traffic RED0 - GRE1
+			traffic_red0_gre1();
+			if(isFlag(TRAFFIC_TIMER)){
+				setTimer(TRAFFIC_TIMER, yel_time*1000);
+				TRAFFIC_LIGHT_STATUS = RED_YEL;
+			}
+			if(isButtonPressed(&BTN0)){
+				//function behavious of MODE2
+				TRAFFIC_LIGHT_STATUS = INIT_MODE2;
+			}
+
+			break;
+		case RED_YEL:
+			//function setTimer = yel_time + display RED0 + YEL1
+			traffic_red0_yel1();
+			if(isFlag(TRAFFIC_TIMER)){
+				setTimer(TRAFFIC_TIMER, gre_time*1000);
+				TRAFFIC_LIGHT_STATUS = GRE_RED;
+			}
+			if(isButtonPressed(&BTN0)){
+				//function behavious of MODE2
+				TRAFFIC_LIGHT_STATUS = INIT_MODE2;
+			}
+			break;
+		case GRE_RED:
+			//function setTimer = gre_time + display GRE0 + RED1
+			traffic_gre0_red1();
+			if(isFlag(0)){
+				setTimer(0, yel_time*1000);
+				TRAFFIC_LIGHT_STATUS = YEL_RED;
+			}
+			if(isButtonPressed(&BTN0)){
+				//function behaviors of MODE2
+				TRAFFIC_LIGHT_STATUS = INIT_MODE2;
+			}
+			break;
+		case YEL_RED:
+			//function setTimer = yel_time + display  YEL0 + RED1
+			traffic_yel0_red1();
+			if(isFlag(0)){
+				setTimer(0, gre_time *1000);
+				TRAFFIC_LIGHT_STATUS = RED_GRE;
+			}
+			if(isButtonPressed(&BTN0)){
+
+				TRAFFIC_LIGHT_STATUS = BTN0_RED;
+			}
+			break;
+
+		case INIT_MODE2:
+			init_mode2();
+			TRAFFIC_LIGHT_STATUS = BTN1_RED;
+			if(isButtonPressed(&BTN0)){
+				TRAFFIC_LIGHT_STATUS = INIT_MODE3;
+			}
+			break;
+		case INIT_MODE3:
+			init_mode3();
+			TRAFFIC_LIGHT_STATUS = BTN1_YEL;
+			if(isButtonPressed(&BTN0)){
+					TRAFFIC_LIGHT_STATUS = INIT_MODE4;
+			}
+			break;
+		case INIT_MODE4:
+			init_mode4();
+			TRAFFIC_LIGHT_STATUS = BTN1_GRE;
+			if(isButtonPressed(&BTN0)){
+					TRAFFIC_LIGHT_STATUS = INIT;
+			}
+			break;
+		case BTN1_RED:
+			behaviors_mode2();
+
+			if(isButtonPressed(&BTN2)){
+
+				TRAFFIC_LIGHT_STATUS = BTN2_RED;
+			}
+			if(isButtonPressed(&BTN0)){
+				//xử lý khi đang trong trạng thái MODE2 mà thoát ra
+					TRAFFIC_LIGHT_STATUS = INIT_MODE3;
+			}
+			break;
+		case BTN1_YEL:
+			behaviors_mode3();
+			if(isButtonPressed(&BTN2)){
+
+				TRAFFIC_LIGHT_STATUS = BTN2_YEL;
+			}
+
+			break;
+		case BTN1_GRE:
+			behaviors_mode4();
+			if(isButtonPressed(&BTN2)){
+
+				TRAFFIC_LIGHT_STATUS = BTN2_GRE;
+			}
+
+			break;
+		case BTN2_RED:
+			update_change_red();
+			TRAFFIC_LIGHT_STATUS = RED_GRE;
+			break;
+		case BTN2_YEL:
+			update_change_yel();
+			TRAFFIC_LIGHT_STATUS = RED_GRE;
+			break;
+		case BTN2_GRE:
+			update_change_gre();
+			TRAFFIC_LIGHT_STATUS = RED_GRE;
+			break;
+		default:
+			break;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+void init_traffic(){
+				enable_led7_seg();
+				turn_off_all_led();
+				//reset button
+				resetButton(&BTN0);
+				resetButton(&BTN1);
+				resetButton(&BTN2);
+				//init software timer
+				setTimer(TRAFFIC_TIMER, gre_time*1000);
+				setTimer(TIMER_7SEG, 10);
+				setTimer(TIMER_1SEC, 1000);
+
+			//counter way
+				counter_way0 = red_time;
+				counter_way1 = gre_time;
+				update_led7_seg_buffer();
+}
+void turn_off_all_led(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+void turn_on_red0_gre1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, ON);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, ON);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+}
+void turn_on_red0_yel1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, ON);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, ON);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+}
+void turn_on_gre0_red1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, ON);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, ON);
+}
+void turn_on_yel0_red1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, ON);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, ON);
+}
+void turn_on_red(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, ON);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, ON);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+void turn_on_yel(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, ON);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, ON);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+void turn_on_gre(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, ON);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, ON);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+void traffic_red0_gre1(){
+	if(1){
+		turn_on_red0_gre1();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+
+}
+void traffic_red0_yel1(){
+	if(1){
+		turn_on_red0_yel1();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+
+}
+void traffic_gre0_red1(){
+	if(1){
+		turn_on_gre0_red1();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+
+}
+void traffic_yel0_red1(){
+	if(1){
+		turn_on_yel0_red1();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+}
+
+void behaviors_mode2(){
+
+		if(1){
+			if(isButtonPressed(&BTN1)){
+				red_temp_time++;
+			}
+			if(isLongPressed(&BTN1)){
+				red_temp_time+= 5;
+			}
+
+			if(red_temp_time > MAX_COUNTER){
+				red_temp_time = MIN_OCOUNTER;
+			}
+
+			counter_way0 = red_temp_time;
+			update_led7_seg_buffer();
+
+		}
+
+
+		if(isFlag(TIMER_BLINK)){
+			HAL_GPIO_TogglePin(RED1_GPIO_Port, RED1_Pin);
+			HAL_GPIO_TogglePin(RED0_GPIO_Port, RED0_Pin);
+				setTimer(TIMER_BLINK, 500);
+		}
+
+		if(isFlag(TIMER_7SEG)){
+			setTimer(TIMER_7SEG,10);
+			HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
+			display_4digits();
+		}
+}
+void behaviors_mode3(){
+	if(1){
+		if(isButtonPressed(&BTN1)){
+			yel_temp_time++;
+		}
+		if(isLongPressed(&BTN1)){
+			yel_temp_time+= 5;
+		}
+		if(yel_temp_time > MAX_COUNTER){
+			yel_temp_time = MIN_OCOUNTER;
+		}
+		counter_way0 = yel_temp_time;
+
+		update_led7_seg_buffer();
+
+	}
+
+
+	if(isFlag(TIMER_BLINK)){
+		HAL_GPIO_TogglePin(YEL1_GPIO_Port, YEL1_Pin);
+		HAL_GPIO_TogglePin(YEL0_GPIO_Port, YEL0_Pin);
+			setTimer(TIMER_BLINK, 500);
+	}
+
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG,10);
+		HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
+		display_4digits();
+	}
+}
+void behaviors_mode4(){
+
+		if(1){
+			if(isButtonPressed(&BTN1)){
+				gre_temp_time++;
+			}
+			if(isLongPressed(&BTN1)){
+				gre_temp_time+= 5;
+			}
+
+			if(gre_temp_time > MAX_COUNTER){
+				gre_temp_time = MIN_OCOUNTER;
+			}
+
+			counter_way0 = gre_temp_time;
+			update_led7_seg_buffer();
+
+		}
+
+
+		if(isFlag(TIMER_BLINK)){
+			HAL_GPIO_TogglePin(GRE1_GPIO_Port, GRE1_Pin);
+			HAL_GPIO_TogglePin(GRE0_GPIO_Port, GRE0_Pin);
+				setTimer(TIMER_BLINK, 500);
+		}
+
+		if(isFlag(TIMER_7SEG)){
+			setTimer(TIMER_7SEG,10);
+			HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
+			display_4digits();
+		}
+}
+void init_mode2(){
+	if(1){
+
+		turn_on_red();
+
+		resetButton(&BTN0);
+		resetButton(&BTN2);
+
+		setTimer(TIMER_BLINK, 500);
+		setTimer(TIMER_7SEG, 10);
+
+		counter_way0 = red_temp_time;
+		counter_way1 = 2;
+		update_led7_seg_buffer();
+	}
+}
+void init_mode3(){
+	if(1){
+		enable_led7_seg();
+		turn_on_yel();
+
+		resetButton(&BTN0);
+		resetButton(&BTN2);
+
+		setTimer(TIMER_BLINK, 500);
+		setTimer(TIMER_7SEG, 10);
+
+		counter_way0 = yel_temp_time;
+		counter_way1 = 3;
+		update_led7_seg_buffer();
+	}
+}
+void init_mode4(){
+	if(1){
+		enable_led7_seg();
+		turn_on_gre();
+
+		resetButton(&BTN0);
+		resetButton(&BTN2);
+
+		setTimer(TIMER_BLINK, 500);
+		setTimer(TIMER_7SEG, 10);
+
+		counter_way0 = gre_temp_time;
+		counter_way1 = 4;
+		update_led7_seg_buffer();
+	}
+}
+
+void update_change_red(){
+	if(red_temp_time > yel_time){
+		red_time = red_temp_time;
+		gre_time = red_time - yel_time;
+	}
+	if(red_temp_time <= yel_time){
+		if(red_temp_time <= 1){
+			red_time = red_temp_time;
+			gre_time = red_time;
+			yel_time = 0;
+		}
+		if(red_temp_time > 1){
+			red_time = red_temp_time;
+			gre_time = red_time - 1;
+			yel_time = 1;
+		}
+	}
+}
+void update_change_yel(){
+	if(yel_temp_time >= red_time){
+		yel_time = yel_temp_time;
+		red_time = yel_time + gre_time;
+	}
+	if(yel_temp_time < red_time){
+		yel_time = yel_temp_time;
+		red_time = yel_time + gre_time;
+	}
+}
+void update_change_gre(){
+	if(gre_temp_time >= red_time){
+		gre_time = gre_temp_time;
+		red_time = yel_time + gre_time;
+	}
+	if(gre_temp_time < red_time){
+		gre_time = gre_temp_time;
+		yel_time = red_time - gre_time;
+	}
+}

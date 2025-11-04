@@ -1,0 +1,27 @@
+/*
+ * traffic_light_config.h
+ *
+ *  Created on: Nov 2, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_TRAFFIC_LIGHT_CONFIG_H_
+#define INC_TRAFFIC_LIGHT_CONFIG_H_
+
+#include "global.h"
+
+void fsm_traffic_config();
+
+void behaviors_mode2();
+void behaviors_mode3();
+void behaviors_mode4();
+
+void init_mode2();
+void init_mode3();
+void init_mode4();
+
+void update_change_red();
+void update_change_yel();
+void update_change_gre();
+
+#endif /* INC_TRAFFIC_LIGHT_CONFIG_H_ */

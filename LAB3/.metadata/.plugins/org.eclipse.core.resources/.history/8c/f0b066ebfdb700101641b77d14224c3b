@@ -1,0 +1,73 @@
+/*
+ * common.h
+ *
+ *  Created on: Oct 2, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_GLOBAL_H_
+#define INC_GLOBAL_H_
+
+#include "main.h"
+#include "button.h"
+#include "led_display.h"
+#include "software_timer.h"
+
+#define ON 0
+#define OFF 1
+
+#define TRAFFIC_TIMER 0
+#define TIMER_7SEG 1
+#define TIMER_1SEC 2
+#define TIMER_BLINK 3
+#define FLAG_BUTTON 4
+#define LED_DEBUG 5
+
+
+#define MAX_COUNTER 99
+#define MIN_OCOUNTER 1
+
+enum {
+	INIT_SYSTEM,
+	IDLE,
+	START,
+	CONFIG,
+	RESET
+
+}
+enum{
+	INIT_RED_GRE,
+	RED_GRE,
+	INIT_RED_YEL,
+	RED_YEL,
+	INIT_GRE_RED,
+	GRE_RED,
+	INIT_YEL_RED,
+	YEL_RED
+}
+enum{
+	BTN0_RED,
+	BTN0_YEL,
+	BTN0_GRE,
+	INIT_MODE2,
+	INIT_MODE3,
+	INIT_MODE4,
+	BTN1_RED,
+	BTN1_YEL,
+	BTN1_GRE,
+	BTN2_RED,
+	BTN2_YEL,
+	BTN2_GRE
+};
+extern uint8_t gre_time ;
+extern uint8_t red_time ;
+extern uint8_t yel_time ;
+
+extern uint8_t gre_temp_time;
+extern uint8_t red_temp_time;
+extern uint8_t yel_temp_time;
+
+
+extern uint8_t SYSTEM_STATE;
+
+#endif /* INC_GLOBAL_H_ */

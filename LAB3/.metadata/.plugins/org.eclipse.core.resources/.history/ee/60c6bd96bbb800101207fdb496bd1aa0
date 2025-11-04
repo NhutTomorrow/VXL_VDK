@@ -1,0 +1,24 @@
+/*
+ * traffic_light_manual.c
+ *
+ *  Created on: Nov 2, 2025
+ *      Author: ASUS
+ */
+
+#include "traffic_light_manual.h"
+void fsm_traffic_manual(){
+	if (system_state != MANUAL_MODE) return;
+
+	switch(status_manual){
+	case INIT_SYSTEM:
+		break;
+	case IDLE:
+		break;
+	case START:
+		break;
+	case CONFIG:
+		break;
+	case RESTART:
+		break;
+	}
+}

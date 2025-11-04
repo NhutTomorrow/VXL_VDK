@@ -1,0 +1,26 @@
+/*
+ * led_display.h
+ *
+ *  Created on: Sep 19, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_LED_DISPLAY_H_
+#define INC_LED_DISPLAY_H_
+
+#include "main.h"
+
+extern uint8_t counter_way0;
+extern uint8_t counter_way1;
+
+extern uint8_t buffer_time[4];
+extern uint8_t led_7seg_index;
+
+void disable_led7_seg();
+void enable_led7_seg();
+void update_led7_seg_buffer();
+void display_number(int num);
+void display_4digits();
+void display_a_digits(int idx);
+
+#endif /* INC_LED_DISPLAY_H_ */

@@ -1,0 +1,15 @@
+/*
+ * traffic_light_manual.h
+ *
+ *  Created on: Nov 2, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_TRAFFIC_LIGHT_MANUAL_H_
+#define INC_TRAFFIC_LIGHT_MANUAL_H_
+
+#include "global.h"
+
+void fsm_traffic_manual();
+
+#endif /* INC_TRAFFIC_LIGHT_MANUAL_H_ */
