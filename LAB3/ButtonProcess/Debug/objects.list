@@ -12,6 +12,7 @@
 "./Core/Src/traffic_light_automatic.o"
 "./Core/Src/traffic_light_config.o"
 "./Core/Src/traffic_light_manual.o"
+"./Core/Src/traffic_light_stop.o"
 "./Core/Startup/startup_stm32f103c6tx.o"
 "./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o"
 "./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o"

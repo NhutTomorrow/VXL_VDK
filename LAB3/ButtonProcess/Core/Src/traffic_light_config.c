@@ -33,6 +33,7 @@ void fsm_traffic_config(){
 			init_mode4();
 			status_config = BTN1_GRE;
 			if(isButtonPressed(&BTN[0])){
+
 					status_config = INIT_RED_GRE;
 			}
 			break;
@@ -66,31 +67,28 @@ void fsm_traffic_config(){
 				status_config = BTN2_GRE;
 			}
 			if(isButtonPressed(&BTN[0])){
+				system_state = AUTOMATIC_MODE;
+				status_automatic = INIT_RED_GRE;
 				status_config = INIT_MODE2;
 			}
 			break;
 		case BTN2_RED:
 			update_change_red();
 			if(1){
-				status_automatic= INIT_RED_GRE;
 				status_config = INIT_MODE2;
-				system_state = AUTOMATIC_MODE;
+
 			}
 			break;
 		case BTN2_YEL:
 			update_change_yel();
 			if(1){
-				status_automatic= INIT_RED_GRE;
-				status_config = INIT_MODE2;
-				system_state = AUTOMATIC_MODE;
+				status_config = INIT_MODE3;
 			}
 			break;
 		case BTN2_GRE:
 			update_change_gre();
 			if(1){
-				status_automatic= INIT_RED_GRE;
-				status_config = INIT_MODE2;
-				system_state = AUTOMATIC_MODE;
+				status_config = INIT_MODE4;
 			}
 			break;
 		default:
@@ -125,7 +123,7 @@ void behaviors_mode2(){
 		}
 
 		if(isFlag(TIMER_7SEG)){
-			setTimer(TIMER_7SEG,10);
+			setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 			HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
 			display_4digits();
 		}
@@ -156,7 +154,7 @@ void behaviors_mode3(){
 	}
 
 	if(isFlag(TIMER_7SEG)){
-		setTimer(TIMER_7SEG,5);
+		setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 		HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
 		display_4digits();
 	}
@@ -188,7 +186,7 @@ void behaviors_mode4(){
 		}
 
 		if(isFlag(TIMER_7SEG)){
-			setTimer(TIMER_7SEG,5);
+			setTimer(TIMER_7SEG,TIME_TIMER_7SEG);
 			HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
 			display_4digits();
 		}
@@ -199,6 +197,7 @@ void init_mode2(){
 		turn_on_red();
 
 		resetButton(&BTN[0]);
+		resetButton(&BTN[1]);
 		resetButton(&BTN[2]);
 
 		setTimer(TIMER_BLINK, 500);
@@ -216,10 +215,11 @@ void init_mode3(){
 		turn_on_yel();
 
 		resetButton(&BTN[0]);
+		resetButton(&BTN[1]);
 		resetButton(&BTN[2]);
 
 		setTimer(TIMER_BLINK, 500);
-		setTimer(TIMER_7SEG, 10);
+		setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 
 		yel_temp_time = yel_time;
 		counter_way0 = yel_temp_time;
@@ -234,10 +234,11 @@ void init_mode4(){
 		turn_on_gre();
 
 		resetButton(&BTN[0]);
+		resetButton(&BTN[1]);
 		resetButton(&BTN[2]);
 
 		setTimer(TIMER_BLINK, 500);
-		setTimer(TIMER_7SEG, 10);
+		setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 
 		gre_temp_time = gre_time;
 		counter_way0 = gre_temp_time;

@@ -17,7 +17,6 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <traffic_light_automatic.h>
 #include "main.h"
 #include "tim.h"
 #include "gpio.h"
@@ -110,14 +109,15 @@ int main(void)
 		  	  button_scan_all();
 		     setTimer(FLAG_BUTTON, 10);
 	  }
-	  if(isFlag(LED_DEBUG)){
-		  HAL_GPIO_TogglePin(GPIOA, LED_RED_Signal_Pin);
-		  setTimer(LED_DEBUG, 500);
-	  }
+//	  if(isFlag(LED_DEBUG)){
+//		  HAL_GPIO_TogglePin(GPIOA, LED_RED_Signal_Pin);
+//		  setTimer(LED_DEBUG, 500);
+//	  }
 
 //	 fsm_manual();
 	 fsm_automatic();
 	 fsm_config();
+	 fsm_traffic_stop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

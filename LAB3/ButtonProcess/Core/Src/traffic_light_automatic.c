@@ -9,8 +9,8 @@
 
 
 
-uint8_t gre_time = 13;
-uint8_t red_time = 15;
+uint8_t gre_time = 3;
+uint8_t red_time = 5;
 uint8_t yel_time = 2;
 
 uint8_t gre_temp_time = 13;
@@ -52,7 +52,7 @@ void traffic_light_automatic(){
 				status_automatic = INIT_GRE_RED;
 			}
 			if(isButtonPressed(&BTN[0])){
-				system_state = CONFIG;
+				system_state = CONFIG_MODE;
 				status_config = INIT_MODE2;
 			}
 			break;
@@ -68,7 +68,7 @@ void traffic_light_automatic(){
 				status_automatic = INIT_YEL_RED;
 			}
 			if(isButtonPressed(&BTN[0])){
-				system_state = CONFIG;
+				system_state = CONFIG_MODE;
 				status_config = INIT_MODE2;
 			}
 			break;
@@ -84,7 +84,7 @@ void traffic_light_automatic(){
 				status_automatic = INIT_RED_GRE;
 			}
 			if(isButtonPressed(&BTN[0])){
-				system_state = CONFIG;
+				system_state = CONFIG_MODE;
 				status_config = INIT_MODE2;
 			}
 			break;
@@ -113,7 +113,7 @@ void init_red0_gre1(){
 				resetButton(&BTN[2]);
 				//init software timer
 				setTimer(TRAFFIC_TIMER, gre_time*1000);
-				setTimer(TIMER_7SEG, 10);
+				setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 				setTimer(TIMER_1SEC, 1000);
 
 			//counter way
@@ -134,7 +134,7 @@ void init_red0_yel1(){
 	resetButton(&BTN[2]);
 	//init software timer
 	setTimer(TRAFFIC_TIMER, yel_time*1000);
-	setTimer(TIMER_7SEG, 10);
+	setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 	setTimer(TIMER_1SEC, 1000);
 
 
@@ -153,7 +153,7 @@ void init_gre0_red1(){
 	resetButton(&BTN[2]);
 	//init software timer
 	setTimer(TRAFFIC_TIMER, gre_time*1000);
-	setTimer(TIMER_7SEG, 10);
+	setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 	setTimer(TIMER_1SEC, 1000);
 
 //counter way
@@ -173,7 +173,7 @@ void init_yel0_red1(){
 	resetButton(&BTN[2]);
 	//init software timer
 	setTimer(TRAFFIC_TIMER, yel_time*1000);
-	setTimer(TIMER_7SEG, 10);
+	setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 	setTimer(TIMER_1SEC, 1000);
 
 //counter way
@@ -243,7 +243,7 @@ void traffic_red0_gre1(){
 		update_led7_seg_buffer();
 	}
 	if(isFlag(TIMER_7SEG)){
-		setTimer(TIMER_7SEG, 10);
+		setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 		display_4digits();
 
 	}
@@ -261,7 +261,7 @@ void traffic_red0_yel1(){
 		update_led7_seg_buffer();
 	}
 	if(isFlag(TIMER_7SEG)){
-		setTimer(TIMER_7SEG, 10);
+		setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 		display_4digits();
 
 	}
@@ -279,7 +279,7 @@ void traffic_gre0_red1(){
 		update_led7_seg_buffer();
 	}
 	if(isFlag(TIMER_7SEG)){
-		setTimer(TIMER_7SEG, 10);
+		setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 		display_4digits();
 	}
 
@@ -296,7 +296,7 @@ void traffic_yel0_red1(){
 		update_led7_seg_buffer();
 	}
 	if(isFlag(TIMER_7SEG)){
-		setTimer(TIMER_7SEG, 10);
+		setTimer(TIMER_7SEG, TIME_TIMER_7SEG);
 		display_4digits();
 	}
 

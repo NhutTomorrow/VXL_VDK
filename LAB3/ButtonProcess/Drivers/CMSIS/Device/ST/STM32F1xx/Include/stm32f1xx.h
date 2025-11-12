@@ -155,7 +155,7 @@ typedef enum
 
 typedef enum 
 {
-  DISABLE = 0,
+  DISABLE = 0, 
   ENABLE = !DISABLE
 } FunctionalState;
 #define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))

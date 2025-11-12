@@ -1,0 +1,119 @@
+/*
+ * button.c
+ *
+ *  Created on: Sep 25, 2025
+ *      Author: ASUS
+ */
+#include "button.h"
+
+
+struct ButtonStruct BTN[NUM_BUTTONS] =
+{
+    // Phần tử 0 (tương ứng BTN0)
+    {
+        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
+        0,
+        0,
+        500,
+        BTN0_GPIO_Port,
+        BTN0_Pin
+    },
+
+    // Phần tử 1 (tương ứng BTN1)
+    {
+        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
+        0,
+        0,
+        500,
+        BTN1_GPIO_Port,
+        BTN1_Pin
+    },
+
+    // Phần tử 2 (tương ứng BTN2)
+    {
+        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
+        0,
+        0,
+        500,
+        BTN2_GPIO_Port,
+        BTN2_Pin
+    },
+//    {
+//        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
+//        0,
+//        0,
+//        500,
+//        BTN3_GPIO_Port,
+//        BTN3_Pin
+//    },
+//    {
+//        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
+//        0,
+//        0,
+//        500,
+//        BTN4_GPIO_Port,
+//        BTN4_Pin
+//    }
+};
+int isButtonPressed(struct ButtonStruct* button){
+	if(button -> isPressed){
+		 button -> isPressed = 0;
+		return 1;
+
+	}
+	return 0;
+}
+int isLongPressed(struct ButtonStruct* button){
+	if(button -> isLongPressed){
+		 button -> isLongPressed = 0;
+		 return 1;
+	}
+	return 0;
+}
+
+void resetButton(struct ButtonStruct* button){
+	button -> isPressed = 0;
+	button -> isLongPressed = 0;
+}
+void getKeyInput(struct ButtonStruct* button){
+	button -> keyButton[2] = button -> keyButton[1];
+	button -> keyButton[1] = button -> keyButton[0];
+	button -> keyButton[0] = HAL_GPIO_ReadPin(button -> PORT, button -> PIN);
+
+	if(button -> keyButton[0] == button -> keyButton[1] && button -> keyButton[1] == button -> keyButton[2]){
+		if(button -> keyButton[2] != button -> keyButton[3]){
+			button -> keyButton[3] = button -> keyButton[2];
+			if(button -> keyButton[3] == PRESSED_STATE){
+				button -> timeOutLongPressed = 500;
+				button -> isPressed = 1;
+			}
+		}
+		else
+			{
+				button -> timeOutLongPressed --;
+				if(button -> timeOutLongPressed <= 0){
+					button -> timeOutLongPressed = 500;
+					if(button -> keyButton[3] == PRESSED_STATE){
+						button -> isLongPressed = 1;
+					}
+				}
+
+			}
+	}
+}
+
+void button_scan_all(){
+	for(int i = 0; i < NUM_BUTTONS; ++i){
+		getKeyInput(&BTN[i]);
+	}
+}
+
+
+
+
+
+
+
+
+
+

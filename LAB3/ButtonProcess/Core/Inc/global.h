@@ -27,6 +27,7 @@
 #define FLAG_BUTTON 4
 #define LED_DEBUG 5
 
+#define TIME_TIMER_7SEG 10
 
 #define MAX_COUNTER 99
 #define MIN_OCOUNTER 1
@@ -34,7 +35,8 @@
 typedef enum {
     MANUAL_MODE,
     AUTOMATIC_MODE,
-    CONFIG_MODE
+    CONFIG_MODE,
+	STOP_MODE
 } SystemState_t;
 
 
@@ -45,6 +47,8 @@ typedef enum {
 	CONFIG,
 	RESTART
 } ManualState_t;
+
+
 typedef enum{
 	INIT_RED_GRE,
 	RED_GRE,
@@ -55,6 +59,7 @@ typedef enum{
 	INIT_YEL_RED,
 	YEL_RED
 } AutomaticState_t;
+
 typedef enum{
 	INIT_MODE2,
 	INIT_MODE3,
@@ -69,6 +74,16 @@ typedef enum{
 	BTN2_YEL,
 	BTN2_GRE
 }ConfigState_t;
+
+typedef enum{
+	INIT_STOP_ROAD,
+	SELECT_ROAD,
+	INIT_ROAD1,
+	ROAD1,
+	INIT_ROAD2,
+	ROAD2
+}StopState_t;
+
 extern uint8_t gre_time ;
 extern uint8_t red_time ;
 extern uint8_t yel_time ;
@@ -82,4 +97,5 @@ extern SystemState_t system_state;
 extern AutomaticState_t status_automatic;
 extern ConfigState_t status_config;
 extern ManualState_t status_manual;
+extern StopState_t status_stop;
 #endif /* INC_GLOBAL_H_ */

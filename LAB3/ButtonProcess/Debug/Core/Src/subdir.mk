@@ -18,7 +18,8 @@ C_SRCS += \
 ../Core/Src/tim.c \
 ../Core/Src/traffic_light_automatic.c \
 ../Core/Src/traffic_light_config.c \
-../Core/Src/traffic_light_manual.c 
+../Core/Src/traffic_light_manual.c \
+../Core/Src/traffic_light_stop.c 
 
 OBJS += \
 ./Core/Src/button.o \
@@ -34,7 +35,8 @@ OBJS += \
 ./Core/Src/tim.o \
 ./Core/Src/traffic_light_automatic.o \
 ./Core/Src/traffic_light_config.o \
-./Core/Src/traffic_light_manual.o 
+./Core/Src/traffic_light_manual.o \
+./Core/Src/traffic_light_stop.o 
 
 C_DEPS += \
 ./Core/Src/button.d \
@@ -50,7 +52,8 @@ C_DEPS += \
 ./Core/Src/tim.d \
 ./Core/Src/traffic_light_automatic.d \
 ./Core/Src/traffic_light_config.d \
-./Core/Src/traffic_light_manual.d 
+./Core/Src/traffic_light_manual.d \
+./Core/Src/traffic_light_stop.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -60,7 +63,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/button.cyclo ./Core/Src/button.d ./Core/Src/button.o ./Core/Src/button.su ./Core/Src/gpio.cyclo ./Core/Src/gpio.d ./Core/Src/gpio.o ./Core/Src/gpio.su ./Core/Src/led_display.cyclo ./Core/Src/led_display.d ./Core/Src/led_display.o ./Core/Src/led_display.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/software_timer.cyclo ./Core/Src/software_timer.d ./Core/Src/software_timer.o ./Core/Src/software_timer.su ./Core/Src/stm32f1xx_hal_msp.cyclo ./Core/Src/stm32f1xx_hal_msp.d ./Core/Src/stm32f1xx_hal_msp.o ./Core/Src/stm32f1xx_hal_msp.su ./Core/Src/stm32f1xx_it.cyclo ./Core/Src/stm32f1xx_it.d ./Core/Src/stm32f1xx_it.o ./Core/Src/stm32f1xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f1xx.cyclo ./Core/Src/system_stm32f1xx.d ./Core/Src/system_stm32f1xx.o ./Core/Src/system_stm32f1xx.su ./Core/Src/tim.cyclo ./Core/Src/tim.d ./Core/Src/tim.o ./Core/Src/tim.su ./Core/Src/traffic_light_automatic.cyclo ./Core/Src/traffic_light_automatic.d ./Core/Src/traffic_light_automatic.o ./Core/Src/traffic_light_automatic.su ./Core/Src/traffic_light_config.cyclo ./Core/Src/traffic_light_config.d ./Core/Src/traffic_light_config.o ./Core/Src/traffic_light_config.su ./Core/Src/traffic_light_manual.cyclo ./Core/Src/traffic_light_manual.d ./Core/Src/traffic_light_manual.o ./Core/Src/traffic_light_manual.su
+	-$(RM) ./Core/Src/button.cyclo ./Core/Src/button.d ./Core/Src/button.o ./Core/Src/button.su ./Core/Src/gpio.cyclo ./Core/Src/gpio.d ./Core/Src/gpio.o ./Core/Src/gpio.su ./Core/Src/led_display.cyclo ./Core/Src/led_display.d ./Core/Src/led_display.o ./Core/Src/led_display.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/software_timer.cyclo ./Core/Src/software_timer.d ./Core/Src/software_timer.o ./Core/Src/software_timer.su ./Core/Src/stm32f1xx_hal_msp.cyclo ./Core/Src/stm32f1xx_hal_msp.d ./Core/Src/stm32f1xx_hal_msp.o ./Core/Src/stm32f1xx_hal_msp.su ./Core/Src/stm32f1xx_it.cyclo ./Core/Src/stm32f1xx_it.d ./Core/Src/stm32f1xx_it.o ./Core/Src/stm32f1xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f1xx.cyclo ./Core/Src/system_stm32f1xx.d ./Core/Src/system_stm32f1xx.o ./Core/Src/system_stm32f1xx.su ./Core/Src/tim.cyclo ./Core/Src/tim.d ./Core/Src/tim.o ./Core/Src/tim.su ./Core/Src/traffic_light_automatic.cyclo ./Core/Src/traffic_light_automatic.d ./Core/Src/traffic_light_automatic.o ./Core/Src/traffic_light_automatic.su ./Core/Src/traffic_light_config.cyclo ./Core/Src/traffic_light_config.d ./Core/Src/traffic_light_config.o ./Core/Src/traffic_light_config.su ./Core/Src/traffic_light_manual.cyclo ./Core/Src/traffic_light_manual.d ./Core/Src/traffic_light_manual.o ./Core/Src/traffic_light_manual.su ./Core/Src/traffic_light_stop.cyclo ./Core/Src/traffic_light_stop.d ./Core/Src/traffic_light_stop.o ./Core/Src/traffic_light_stop.su
 
 .PHONY: clean-Core-2f-Src
 

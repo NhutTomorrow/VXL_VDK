@@ -38,22 +38,22 @@ struct ButtonStruct BTN[NUM_BUTTONS] =
         BTN2_GPIO_Port,
         BTN2_Pin
     },
-//    {
-//        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
-//        0,
-//        0,
-//        500,
-//        BTN3_GPIO_Port,
-//        BTN3_Pin
-//    },
-//    {
-//        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
-//        0,
-//        0,
-//        500,
-//        BTN4_GPIO_Port,
-//        BTN4_Pin
-//    }
+    {
+        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
+        0,
+        0,
+        500,
+        BTN3_GPIO_Port,
+        BTN3_Pin
+    },
+    {
+        {NORMAL_STATE, NORMAL_STATE, NORMAL_STATE, NORMAL_STATE},
+        0,
+        0,
+        500,
+        BTN4_GPIO_Port,
+        BTN4_Pin
+    }
 };
 int isButtonPressed(struct ButtonStruct* button){
 	if(button -> isPressed){
