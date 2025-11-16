@@ -1,0 +1,143 @@
+!SESSION 2025-11-12 20:36:42.458 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-11-12 20:37:11.181
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-11-12 20:37:11.183
+!MESSAGE Log4j2 initialized with config file D:\VXL_VDK_LAB\LAB4\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-11-12 20:37:15.148
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-11-12 20:38:30.924 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-11-12 20:38:41.226
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-11-12 20:38:41.228
+!MESSAGE Log4j2 initialized with config file D:\VXL_VDK_LAB\LAB4\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-11-12 20:38:44.504
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-11-12 20:39:43.001
+!MESSAGE Indexed 'Traffic_Button' (28 sources, 117 headers) in 3.25 sec: 8,896 declarations; 46,301 references; 2 unresolved inclusions; 36 syntax errors; 188 unresolved names (0.34%)
+
+!ENTRY org.eclipse.core.resources 4 77 2025-11-12 20:41:04.826
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-11-12 20:41:04.828
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-11-12 20:41:04.828
+!MESSAGE D:\VXL_VDK_LAB\LAB4\ButtonProcess overlaps the location of another project: 'ButtonProcess'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-11-12 20:41:04.828
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-11-12 20:41:05.720
+!MESSAGE Indexed 'ButtonProcess' (28 sources, 117 headers) in 2.02 sec: 8,896 declarations; 46,301 references; 2 unresolved inclusions; 36 syntax errors; 188 unresolved names (0.34%)
+
+!ENTRY org.eclipse.core.resources 4 77 2025-11-12 20:42:03.380
+!MESSAGE Invalid project description.
+!SUBENTRY 1 unknown 0 0 2025-11-12 20:42:03.380
+!MESSAGE OK
+!SUBENTRY 1 org.eclipse.core.resources 4 77 2025-11-12 20:42:03.380
+!MESSAGE D:\VXL_VDK_LAB\LAB4\ButtonProcess overlaps the location of another project: 'ButtonProcess'
+
+!ENTRY com.st.stm32cube.common.projectcreation 4 0 2025-11-12 20:42:03.380
+!MESSAGE Project is null
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-11-12 20:42:17.680
+!MESSAGE Indexed 'Scheduler' (0 sources, 0 headers) in 0.001 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+!SESSION 2025-11-12 22:11:29.301 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-11-12 22:11:37.778
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-11-12 22:11:37.780
+!MESSAGE Log4j2 initialized with config file D:\VXL_VDK_LAB\LAB4\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-11-12 22:11:45.070
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-11-13 11:07:53.031 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.core.resources 2 10035 2025-11-13 11:07:56.550
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-11-13 11:08:01.910
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-11-13 11:08:01.911
+!MESSAGE Log4j2 initialized with config file D:\VXL_VDK_LAB\LAB4\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-11-13 11:08:11.133
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-11-13 21:37:35.335 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.core.resources 2 10035 2025-11-13 21:42:39.432
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-11-13 21:42:43.636
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-11-13 21:42:43.637
+!MESSAGE Log4j2 initialized with config file D:\VXL_VDK_LAB\LAB4\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-11-13 21:42:50.380
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-11-16 15:16:39.398 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-11-16 15:16:50.908
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-11-16 15:16:50.909
+!MESSAGE Log4j2 initialized with config file D:\VXL_VDK_LAB\LAB4\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-11-16 15:16:58.503
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-11-16 18:53:13.108 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.eclipse.core.resources 2 10035 2025-11-16 18:53:20.263
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-11-16 18:53:25.223
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-11-16 18:53:25.225
+!MESSAGE Log4j2 initialized with config file D:\VXL_VDK_LAB\LAB4\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-11-16 18:53:35.223
+!MESSAGE Started RMI Server, listening on port 41337

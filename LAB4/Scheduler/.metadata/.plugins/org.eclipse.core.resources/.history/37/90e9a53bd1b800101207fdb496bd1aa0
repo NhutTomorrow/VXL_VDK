@@ -1,0 +1,304 @@
+/*
+ * traffic_light.c
+ *
+ *  Created on: Sep 26, 2025
+ *      Author: ASUS
+ */
+
+#include <traffic_light_automatic.h>
+
+
+
+uint8_t gre_time = 13;
+uint8_t red_time = 15;
+uint8_t yel_time = 2;
+
+uint8_t gre_temp_time = 13;
+uint8_t red_temp_time = 15;
+uint8_t yel_temp_time = 2;
+
+void traffic_light_automatic(){
+
+	if (system_state != AUTOMATIC_MODE) return;
+
+	switch(status_automatic){
+		case INIT_RED_GRE:
+			init_red0_gre1();
+			status_automatic = RED_GRE;
+//			HAL_Delay(5000);
+			break;
+		case RED_GRE:
+			//traffic RED0 - GRE1
+			traffic_red0_gre1();
+			if(isFlag(TRAFFIC_TIMER)){
+				status_automatic = INIT_RED_YEL;
+			}
+			if(isButtonPressed(&BTN[0])){
+				//function behavious of MODE2
+				status_automatic = INIT_MODE2;
+			}
+//			HAL_Delay(500000);
+			break;
+		case INIT_RED_YEL:
+			init_red0_yel1();
+			status_automatic = RED_YEL;
+			break;
+
+		case RED_YEL:
+			//function setTimer = yel_time + display RED0 + YEL1
+			traffic_red0_yel1();
+			if(isFlag(TRAFFIC_TIMER)){
+
+				status_automatic = INIT_GRE_RED;
+			}
+			if(isButtonPressed(&BTN[0])){
+				//function behavious of MODE2
+				status_automatic = INIT_MODE2;
+			}
+			break;
+		case INIT_GRE_RED:
+			init_gre0_red1();
+			status_automatic = GRE_RED;
+			break;
+
+		case GRE_RED:
+			//function setTimer = gre_time + display GRE0 + RED1
+			traffic_gre0_red1();
+			if(isFlag(TRAFFIC_TIMER)){
+				status_automatic = INIT_YEL_RED;
+			}
+			if(isButtonPressed(&BTN[0])){
+				//function behaviors of MODE2
+				status_automatic = INIT_MODE2;
+			}
+			break;
+		case INIT_YEL_RED:
+			init_yel0_red1();
+			status_automatic = YEL_RED;
+			break;
+
+		case YEL_RED:
+			//function setTimer = yel_time + display  YEL0 + RED1
+			traffic_yel0_red1();
+			if(isFlag(TRAFFIC_TIMER)){
+				status_automatic = INIT_RED_GRE;
+			}
+			if(isButtonPressed(&BTN[0])){
+
+				status_automatic = INIT_MODE2;
+			}
+			break;
+
+		default:
+			break;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+void init_red0_gre1(){
+				disable_led7_seg();
+				turn_off_all_led();
+
+				//reset button
+				resetButton(&BTN[0]);
+				resetButton(&BTN[1]);
+				resetButton(&BTN[2]);
+				//init software timer
+				setTimer(TRAFFIC_TIMER, gre_time*1000);
+				setTimer(TIMER_7SEG, 10);
+				setTimer(TIMER_1SEC, 1000);
+
+			//counter way
+				counter_way0 = red_time;
+				counter_way1 = gre_time;
+//				counter_way0 = 0;
+//				counter_way1 = 0;
+				update_led7_seg_buffer();
+
+}
+void init_red0_yel1(){
+	disable_led7_seg();
+	turn_off_all_led();
+
+	//reset button
+	resetButton(&BTN[0]);
+	resetButton(&BTN[1]);
+	resetButton(&BTN[2]);
+	//init software timer
+	setTimer(TRAFFIC_TIMER, yel_time*1000);
+	setTimer(TIMER_7SEG, 10);
+	setTimer(TIMER_1SEC, 1000);
+
+
+	counter_way1 = yel_time;
+//				counter_way0 = 0;
+//				counter_way1 = 0;
+	update_led7_seg_buffer();
+}
+void init_gre0_red1(){
+	disable_led7_seg();
+	turn_off_all_led();
+
+	//reset button
+	resetButton(&BTN[0]);
+	resetButton(&BTN[1]);
+	resetButton(&BTN[2]);
+	//init software timer
+	setTimer(TRAFFIC_TIMER, gre_time*1000);
+	setTimer(TIMER_7SEG, 10);
+	setTimer(TIMER_1SEC, 1000);
+
+//counter way
+	counter_way0 = gre_time;
+	counter_way1 = red_time;
+//				counter_way0 = 0;
+//				counter_way1 = 0;
+	update_led7_seg_buffer();
+}
+void init_yel0_red1(){
+	disable_led7_seg();
+	turn_off_all_led();
+
+	//reset button
+	resetButton(&BTN[0]);
+	resetButton(&BTN[1]);
+	resetButton(&BTN[2]);
+	//init software timer
+	setTimer(TRAFFIC_TIMER, yel_time*1000);
+	setTimer(TIMER_7SEG, 10);
+	setTimer(TIMER_1SEC, 1000);
+
+//counter way
+	counter_way0 = yel_time;
+//	counter_way1 = gre_time;
+//				counter_way0 = 0;
+//				counter_way1 = 0;
+	update_led7_seg_buffer();
+}
+
+void turn_off_all_led(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+void turn_on_red0_gre1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, ON);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, ON);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+}
+void turn_on_red0_yel1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, ON);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, ON);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+}
+void turn_on_gre0_red1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, ON);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, ON);
+}
+void turn_on_yel0_red1(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, ON);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, ON);
+}
+
+void traffic_red0_gre1(){
+	if(1){
+		turn_on_red0_gre1();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+
+	}
+
+
+}
+void traffic_red0_yel1(){
+	if(1){
+		turn_on_red0_yel1();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+
+	}
+
+
+}
+void traffic_gre0_red1(){
+	if(1){
+		turn_on_gre0_red1();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+	}
+
+
+}
+void traffic_yel0_red1(){
+	if(1){
+		turn_on_yel0_red1();
+	}
+	if(isFlag(TIMER_1SEC)){
+		setTimer(TIMER_1SEC,1000);
+		counter_way0--;
+		counter_way1--;
+		update_led7_seg_buffer();
+	}
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG, 10);
+		display_4digits();
+	}
+
+}
+

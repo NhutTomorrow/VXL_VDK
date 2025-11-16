@@ -1,0 +1,7 @@
+1758208161676	Delete resource 'ButtonProcess/Core/Inc/input_reading'
+1758208259929	Delete resource 'ButtonProcess/Core/Inc/timer.c'
+1758209776319	Rename resource 'ButtonProcess'
+1758266181358	Delete resource 'Traffic_Button/Core/Src/input_reading.c'
+1758266186337	Delete resource 'Traffic_Button/Core/Src/input_processing.c'
+1758266193531	Delete resource 'Traffic_Button/Core/Inc/input_processing.h'
+1758266196888	Delete resource 'Traffic_Button/Core/Inc/input_reading.h'

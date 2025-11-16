@@ -1,0 +1,18 @@
+/*
+ * Scheduler.h
+ *
+ *  Created on: Nov 12, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_SCHEDULER_H_
+#define INC_SCHEDULER_H_
+
+
+void SCH_Update(void);
+void SCH_Dispatch_Task(void);
+uint32_t SCH_Add_Task(void(* pFunction)(), uint32_t DELAY, uint32_t PERIOD));
+
+
+
+#endif /* INC_SCHEDULER_H_ */

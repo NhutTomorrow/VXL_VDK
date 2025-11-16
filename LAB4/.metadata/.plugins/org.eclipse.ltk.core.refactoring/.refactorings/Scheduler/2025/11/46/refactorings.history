@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;Scheduler/Traffic_Button.ioc&apos; to &apos;Scheduler.ioc&apos;" description="Rename resource &apos;Traffic_Button.ioc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Traffic_Button.ioc" name="Scheduler.ioc" stamp="1762954948051" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;Scheduler/Core/Inc/Scheduler.h&apos; to &apos;scheduler.h&apos;" description="Rename resource &apos;Scheduler.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/Scheduler.h" name="scheduler.h" stamp="1762960939509" updateReferences="true"/>
+</session>

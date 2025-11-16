@@ -1,0 +1,12 @@
+../Core/Src/main.c:51:6:statusLED	8	static
+../Core/Src/main.c:55:6:GRE_LED	8	static
+../Core/Src/main.c:58:6:RED_LED	8	static
+../Core/Src/main.c:61:6:YEL_LED	8	static
+../Core/Src/main.c:91:5:main	8	static
+../Core/Src/main.c:149:6:SystemClock_Config	72	static
+../Core/Src/main.c:182:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:189:6:init_system	8	static
+../Core/Src/main.c:195:6:fsm_manual	8	static
+../Core/Src/main.c:198:6:fsm_automatic	8	static
+../Core/Src/main.c:201:6:fsm_config	8	static
+../Core/Src/main.c:210:6:Error_Handler	4	static,ignoring_inline_asm

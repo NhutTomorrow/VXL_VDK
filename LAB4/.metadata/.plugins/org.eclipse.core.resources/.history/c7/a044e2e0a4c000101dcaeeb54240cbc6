@@ -1,0 +1,139 @@
+/*
+ * scheduler.c
+ *
+ *  Created on: Nov 12, 2025
+ *      Author: ASUS
+ */
+
+#ifndef SRC_SCHEDULER_C_
+#define SRC_SCHEDULER_C_
+
+#include "scheduler.h"
+
+void SCH_init(void){
+	for(int i = 0; i < SCH_MAX_TASK; ++ i ){
+			SCH_Delete_Task(i);
+	}
+
+	Error_Code_G = 0;
+	timer_Init();
+	//WatchDog_init();
+}
+void SCH_Update(void){
+	if(SCH_Task_Head == 0 ){
+		return;
+	}
+	SCH_Task_Head -> Delay --;
+	while(SCH_Task_Head != 0  && SCH_Task_Head -> Delay == 0 ){
+		sTask* SCH_Due_Task = 0;
+
+		SCH_Due_Task = SCH_Task_Head;
+		SCH_Task_Head = SCH_Task_Head -> pNext;
+
+		if(SCH_Due_Task_head == 0){
+			SCH_Due_Task_head = SCH_Due_Task;
+			SCH_Due_Task_tail = SCH_Due_Task;
+		} else {
+			SCH_Due_Task_tail -> pNext = SCH_Due_Task;
+			SCH_Due_Task_tail = SCH_Due_Task;
+		}
+		SCH_Due_Task -> pNext  = 0;
+	}
+
+
+}
+void SCH_Dispatch_Task(void){
+	if(SCH_Due_Task_head == 0){
+		SCH_Go_To_Sleep();
+		return;
+	}
+		sTask* SCH_Due_Task = SCH_Due_Task_head;
+		SCH_Due_Task_head = SCH_Due_Task_head -> pNext;
+
+		if(SCH_Due_Task_head == 0) SCH_Due_Task_tail = 0; // because SCH_head = SCH_tail when have <= 1 ready task
+
+
+		if(SCH_Due_Task -> RunMe > 0){
+			(* SCH_Due_Task->pTask)();
+			SCH_Due_Task -> RunMe = 0;
+
+			if(SCH_Due_Task -> Period == 0){
+				SCH_Delete_Task(SCH_Due_Task);
+			}
+			else {
+				SCH_Due_Task -> Delay = SCH_Due_Task -> Period;
+				SCH_Add_Task(SCH_Due_Task -> pTask, SCH_Due_Task -> Delay, SCH_Due_Task -> Period);
+			}
+		}
+
+//	SCH_Report_Status();
+//	SCH_Go_To_Sleep();
+}
+uint32_t SCH_Add_Task(void(* pFunction)(), uint32_t DELAY, uint32_t PERIOD){
+//		sTask* newTask(pFunction, DELAY, PERIOD); // error
+		sTask* pNewTask = (sTask*)malloc(sizeof(sTask));
+		pNewTask -> pTask = pFunction;
+		pNewTask -> Delay = DELAY;
+		pNewTask -> Period = PERIOD;
+		pNewTask ->pNext = 0;
+
+
+		if(SCH_Task_Head == NULL){
+			SCH_Task_Head = pNewTask;
+		}
+		sTask* temp = SCH_Task_Head;
+		sTask* prevTemp = 0;
+		while(temp != 0){
+			if(pNewTask -> Delay <=  temp -> Delay){
+				pNewTask -> pNext = temp;
+				//update Delay of temp
+				temp -> Delay = temp -> Delay - pNewTask -> Delay;
+
+				if(prevTemp != NULL){
+					prevTemp -> pNext = pNewTask;
+				}
+				return ;
+			}
+			else
+			{
+				pNewTask -> Delay -= temp -> Delay;
+				prevTemp = temp;
+				temp  = temp -> pNext;
+			}
+		}
+		if(temp == 0){
+			prevTemp -> pNext = pNewTask;
+		}
+}
+void SCH_Delete_Task(sTask* task){
+		sTask* pCur = SCH_Task_Head;
+		sTask* pPrev = NULL;
+
+		while(pCur != NULL){
+			if(pCur == task){
+				if(pPrev == NULL){
+					SCH_Task_Head = pCur -> pNext;
+				}
+				else {
+					pPrev -> pNext = pCur -> pNext;
+				}
+
+				free(pCur);
+				free(pPrev);
+				return;
+			}
+
+			pPrev = pCur;
+			pCur = pCur -> pNext;
+		}
+
+}
+void SCH_Report_Status(void ){
+
+}
+void SCH_Go_To_Sleep(void ){
+	HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+}
+
+
+#endif /* SRC_SCHEDULER_C_ */

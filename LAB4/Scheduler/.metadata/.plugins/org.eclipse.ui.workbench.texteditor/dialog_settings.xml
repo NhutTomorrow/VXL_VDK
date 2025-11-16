@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="true"/>
+	<list key="replacehistory">
+		<item value="status_automatic"/>
+		<item value="status_config"/>
+		<item value="system_state"/>
+		<item value="SYSTEM_STATE"/>
+	</list>
+	<list key="searchhistory">
+		<item value="system_state"/>
+		<item value="SYSTEM_STATE"/>
+		<item value="TRAFFIC_LIGHT_STATUS"/>
+	</list>
+</section>

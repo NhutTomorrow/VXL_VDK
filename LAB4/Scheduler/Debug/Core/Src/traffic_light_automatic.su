@@ -1,0 +1,14 @@
+../Core/Src/traffic_light_automatic.c:20:6:traffic_light_automatic	8	static
+../Core/Src/traffic_light_automatic.c:106:6:init_red0_gre1	8	static
+../Core/Src/traffic_light_automatic.c:128:6:init_red0_yel1	8	static
+../Core/Src/traffic_light_automatic.c:147:6:init_gre0_red1	8	static
+../Core/Src/traffic_light_automatic.c:167:6:init_yel0_red1	8	static
+../Core/Src/traffic_light_automatic.c:188:6:turn_off_all_led	8	static
+../Core/Src/traffic_light_automatic.c:199:6:turn_on_red0_gre1	8	static
+../Core/Src/traffic_light_automatic.c:208:6:turn_on_red0_yel1	8	static
+../Core/Src/traffic_light_automatic.c:217:6:turn_on_gre0_red1	8	static
+../Core/Src/traffic_light_automatic.c:226:6:turn_on_yel0_red1	8	static
+../Core/Src/traffic_light_automatic.c:236:6:traffic_red0_gre1	8	static
+../Core/Src/traffic_light_automatic.c:254:6:traffic_red0_yel1	8	static
+../Core/Src/traffic_light_automatic.c:272:6:traffic_gre0_red1	8	static
+../Core/Src/traffic_light_automatic.c:289:6:traffic_yel0_red1	8	static

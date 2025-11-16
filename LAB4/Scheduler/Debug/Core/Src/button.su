@@ -1,0 +1,5 @@
+../Core/Src/button.c:58:5:isButtonPressed	16	static
+../Core/Src/button.c:66:5:isLongPressed	16	static
+../Core/Src/button.c:74:6:resetButton	16	static
+../Core/Src/button.c:78:6:getKeyInput	16	static
+../Core/Src/button.c:105:6:button_scan_all	16	static

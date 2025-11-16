@@ -1,0 +1,78 @@
+/*
+ * traffic_light_config.h
+ *
+ *  Created on: Nov 2, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_TRAFFIC_LIGHT_CONFIG_H_
+#define INC_TRAFFIC_LIGHT_CONFIG_H_
+void fsm_traffic_config(){
+	switch(system_state){
+		case INIT_MODE2:
+			init_mode2();
+			SYSTEM_STATE = BTN1_RED;
+			if(isButtonPressed(&BTN0)){
+				SYSTEM_STATE = INIT_MODE3;
+			}
+			break;
+		case INIT_MODE3:
+			init_mode3();
+			SYSTEM_STATE = BTN1_YEL;
+			if(isButtonPressed(&BTN0)){
+					SYSTEM_STATE = INIT_MODE4;
+			}
+			break;
+		case INIT_MODE4:
+			init_mode4();
+			SYSTEM_STATE = BTN1_GRE;
+			if(isButtonPressed(&BTN0)){
+					SYSTEM_STATE = INIT;
+			}
+			break;
+		case BTN1_RED:
+			behaviors_mode2();
+
+			if(isButtonPressed(&BTN2)){
+
+				SYSTEM_STATE = BTN2_RED;
+			}
+			if(isButtonPressed(&BTN0)){
+				//xử lý khi đang trong trạng thái MODE2 mà thoát ra
+					SYSTEM_STATE = INIT_MODE3;
+			}
+			break;
+		case BTN1_YEL:
+			behaviors_mode3();
+			if(isButtonPressed(&BTN2)){
+
+				SYSTEM_STATE = BTN2_YEL;
+			}
+
+			break;
+		case BTN1_GRE:
+			behaviors_mode4();
+			if(isButtonPressed(&BTN2)){
+
+				SYSTEM_STATE = BTN2_GRE;
+			}
+
+			break;
+		case BTN2_RED:
+			update_change_red();
+			SYSTEM_STATE = RED_GRE;
+			break;
+		case BTN2_YEL:
+			update_change_yel();
+			SYSTEM_STATE = RED_GRE;
+			break;
+		case BTN2_GRE:
+			update_change_gre();
+			SYSTEM_STATE = RED_GRE;
+			break;
+		default:
+			break;
+	}
+}
+
+#endif /* INC_TRAFFIC_LIGHT_CONFIG_H_ */

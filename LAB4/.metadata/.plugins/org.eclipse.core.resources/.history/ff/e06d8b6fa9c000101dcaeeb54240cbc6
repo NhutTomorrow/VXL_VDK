@@ -1,0 +1,40 @@
+/*
+ * Scheduler.h
+ *
+ *  Created on: Nov 12, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_SCHEDULER_H_
+#define INC_SCHEDULER_H_
+
+#include "main.h"
+#include "software_timer.h"
+
+typedef struct sTask{
+	void( * pTask)(void);
+	uint32_t Delay;
+	uint32_t Period;
+	uint32_t RunMe;
+//	uint32_t TaskID ;
+	struct sTask* pNext;
+}sTask;
+
+#define SCH_MAX_TASK 10
+#define NO_TASK_ID 0
+
+
+extern sTask* SCH_Task_Head = 0;
+
+sTask* SCH_Due_Task_head = 0;
+sTask* SCH_Due_Task_tail = 0;
+//extern uint32_t Error_Code_G;
+
+void SCH_init(void);
+void SCH_Update(void);
+void SCH_Dispatch_Task(void);
+void SCH_Add_Task(void(* pFunction)(), uint32_t DELAY, uint32_t PERIOD);
+void SCH_Delete_Task(sTask*);
+void SCH_Report_Status(void );
+void SCH_Go_To_Sleep(void);
+#endif /* INC_SCHEDULER_H_ */

@@ -1,0 +1,20 @@
+/*
+ * traffic_light.c
+ *
+ *  Created on: Sep 26, 2025
+ *      Author: ASUS
+ */
+
+#include "traffic_light.h"
+
+uint8_t gre_time = 13;
+uint8_t red_time = 15;
+uint8_t yel_time = 2;
+void traffic_light(){
+	switch (TRAFFIC_LIGHT_STATUS){
+		case INIT:
+			break;
+		default:
+			break;
+	}
+}

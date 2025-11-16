@@ -1,0 +1,12 @@
+../Core/Src/main.c:51:6:statusLED	1
+../Core/Src/main.c:55:6:GRE_LED	1
+../Core/Src/main.c:58:6:RED_LED	1
+../Core/Src/main.c:61:6:YEL_LED	1
+../Core/Src/main.c:91:5:main	1
+../Core/Src/main.c:149:6:SystemClock_Config	3
+../Core/Src/main.c:182:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:189:6:init_system	1
+../Core/Src/main.c:195:6:fsm_manual	1
+../Core/Src/main.c:198:6:fsm_automatic	1
+../Core/Src/main.c:201:6:fsm_config	1
+../Core/Src/main.c:210:6:Error_Handler	1

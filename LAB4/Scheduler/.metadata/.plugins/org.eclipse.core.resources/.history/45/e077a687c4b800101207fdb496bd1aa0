@@ -1,0 +1,298 @@
+/*
+ * traffic_light_config.c
+ *
+ *  Created on: Nov 2, 2025
+ *      Author: ASUS
+ */
+
+#ifndef SRC_TRAFFIC_LIGHT_CONFIG_C_
+#define SRC_TRAFFIC_LIGHT_CONFIG_C_
+
+#include "traffic_light_config.h"
+void fsm_traffic_config(){
+	if (system_state != CONFIG_MODE) return;
+
+	switch(status_config){
+		case INIT_MODE2:
+			init_mode2();
+			status_config = BTN1_RED;
+			if(isButtonPressed(&BTN[0])){
+				status_config = INIT_MODE3;
+			}
+			break;
+		case INIT_MODE3:
+			init_mode3();
+			status_config = BTN1_YEL;
+			if(isButtonPressed(&BTN[0])){
+					status_config = INIT_MODE4;
+			}
+			break;
+		case INIT_MODE4:
+			init_mode4();
+			status_config = BTN1_GRE;
+			if(isButtonPressed(&BTN[0])){
+					status_config = INIT_RED_GRE;
+			}
+			break;
+		case BTN1_RED:
+			behaviors_mode2();
+
+			if(isButtonPressed(&BTN[2])){
+
+				status_config = BTN2_RED;
+			}
+			if(isButtonPressed(&BTN[0])){
+				//xử lý khi đang trong trạng thái MODE2 mà thoát ra
+					status_config = INIT_MODE3;
+			}
+			break;
+		case BTN1_YEL:
+			behaviors_mode3();
+			if(isButtonPressed(&BTN[2])){
+
+				status_config = BTN2_YEL;
+			}
+
+			break;
+		case BTN1_GRE:
+			behaviors_mode4();
+			if(isButtonPressed(&BTN[2])){
+
+				status_config = BTN2_GRE;
+			}
+
+			break;
+		case BTN2_RED:
+			update_change_red();
+			status_config = RED_GRE;
+			break;
+		case BTN2_YEL:
+			update_change_yel();
+			status_config = RED_GRE;
+			break;
+		case BTN2_GRE:
+			update_change_gre();
+			status_config = RED_GRE;
+			break;
+		default:
+			break;
+	}
+}
+void behaviors_mode2(){
+
+		if(1){
+			if(isButtonPressed(&BTN[1])){
+				red_temp_time++;
+			}
+			if(isLongPressed(&BTN1)){
+				red_temp_time+= 5;
+			}
+
+			if(red_temp_time > MAX_COUNTER){
+				red_temp_time = MIN_OCOUNTER;
+			}
+
+			counter_way0 = red_temp_time;
+			update_led7_seg_buffer();
+
+		}
+
+
+		if(isFlag(TIMER_BLINK)){
+			HAL_GPIO_TogglePin(RED1_GPIO_Port, RED1_Pin);
+			HAL_GPIO_TogglePin(RED0_GPIO_Port, RED0_Pin);
+				setTimer(TIMER_BLINK, 500);
+		}
+
+		if(isFlag(TIMER_7SEG)){
+			setTimer(TIMER_7SEG,5);
+			HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
+			display_4digits();
+		}
+}
+void behaviors_mode3(){
+	if(1){
+		if(isButtonPressed(&BTN1)){
+			yel_temp_time++;
+		}
+		if(isLongPressed(&BTN1)){
+			yel_temp_time+= 5;
+		}
+		if(yel_temp_time > MAX_COUNTER){
+			yel_temp_time = MIN_OCOUNTER;
+		}
+		counter_way0 = yel_temp_time;
+
+		update_led7_seg_buffer();
+
+	}
+
+
+	if(isFlag(TIMER_BLINK)){
+		HAL_GPIO_TogglePin(YEL1_GPIO_Port, YEL1_Pin);
+		HAL_GPIO_TogglePin(YEL0_GPIO_Port, YEL0_Pin);
+			setTimer(TIMER_BLINK, 500);
+	}
+
+	if(isFlag(TIMER_7SEG)){
+		setTimer(TIMER_7SEG,5);
+		HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
+		display_4digits();
+	}
+}
+void behaviors_mode4(){
+
+		if(1){
+			if(isButtonPressed(&BTN1)){
+				gre_temp_time++;
+			}
+			if(isLongPressed(&BTN1)){
+				gre_temp_time+= 5;
+			}
+
+			if(gre_temp_time > MAX_COUNTER){
+				gre_temp_time = MIN_OCOUNTER;
+			}
+
+			counter_way0 = gre_temp_time;
+			update_led7_seg_buffer();
+
+		}
+
+
+		if(isFlag(TIMER_BLINK)){
+			HAL_GPIO_TogglePin(GRE1_GPIO_Port, GRE1_Pin);
+			HAL_GPIO_TogglePin(GRE0_GPIO_Port, GRE0_Pin);
+				setTimer(TIMER_BLINK, 500);
+		}
+
+		if(isFlag(TIMER_7SEG)){
+			setTimer(TIMER_7SEG,5);
+			HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, ON);
+			display_4digits();
+		}
+}
+void init_mode2(){
+	if(1){
+
+		turn_on_red();
+
+		resetButton(&BTN0);
+		resetButton(&BTN2);
+
+		setTimer(TIMER_BLINK, 500);
+		setTimer(TIMER_7SEG, 10);
+
+		counter_way0 = red_temp_time;
+		counter_way1 = 2;
+		update_led7_seg_buffer();
+	}
+}
+void init_mode3(){
+	if(1){
+		enable_led7_seg();
+		turn_on_yel();
+
+		resetButton(&BTN0);
+		resetButton(&BTN2);
+
+		setTimer(TIMER_BLINK, 500);
+		setTimer(TIMER_7SEG, 10);
+
+		counter_way0 = yel_temp_time;
+		counter_way1 = 3;
+		update_led7_seg_buffer();
+	}
+}
+void init_mode4(){
+	if(1){
+		enable_led7_seg();
+		turn_on_gre();
+
+		resetButton(&BTN0);
+		resetButton(&BTN2);
+
+		setTimer(TIMER_BLINK, 500);
+		setTimer(TIMER_7SEG, 10);
+
+		counter_way0 = gre_temp_time;
+		counter_way1 = 4;
+		update_led7_seg_buffer();
+	}
+}
+
+void update_change_red(){
+	if(red_temp_time > yel_time){
+		red_time = red_temp_time;
+		gre_time = red_time - yel_time;
+	}
+	if(red_temp_time <= yel_time){
+		if(red_temp_time <= 1){
+			red_time = red_temp_time;
+			gre_time = red_time;
+			yel_time = 0;
+		}
+		if(red_temp_time > 1){
+			red_time = red_temp_time;
+			gre_time = red_time - 1;
+			yel_time = 1;
+		}
+	}
+}
+void update_change_yel(){
+	if(yel_temp_time >= red_time){
+		yel_time = yel_temp_time;
+		red_time = yel_time + gre_time;
+	}
+	if(yel_temp_time < red_time){
+		yel_time = yel_temp_time;
+		red_time = yel_time + gre_time;
+	}
+}
+void update_change_gre(){
+	if(gre_temp_time >= red_time){
+		gre_time = gre_temp_time;
+		red_time = yel_time + gre_time;
+	}
+	if(gre_temp_time < red_time){
+		gre_time = gre_temp_time;
+		yel_time = red_time - gre_time;
+	}
+}
+void turn_on_red(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, ON);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, ON);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+void turn_on_yel(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, OFF);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, ON);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, OFF);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, ON);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+void turn_on_gre(){
+	HAL_GPIO_WritePin(GRE0_GPIO_Port, GRE0_Pin, ON);
+	HAL_GPIO_WritePin(YEL0_GPIO_Port, YEL0_Pin, OFF);
+	HAL_GPIO_WritePin(RED0_GPIO_Port, RED0_Pin, OFF);
+
+	HAL_GPIO_WritePin(GRE1_GPIO_Port, GRE1_Pin, ON);
+	HAL_GPIO_WritePin(YEL1_GPIO_Port, YEL1_Pin, OFF);
+	HAL_GPIO_WritePin(RED1_GPIO_Port, RED1_Pin, OFF);
+
+	HAL_GPIO_WritePin(LED_RED_Signal_GPIO_Port, LED_RED_Signal_Pin, OFF);
+}
+
+
+
+#endif /* SRC_TRAFFIC_LIGHT_CONFIG_C_ */

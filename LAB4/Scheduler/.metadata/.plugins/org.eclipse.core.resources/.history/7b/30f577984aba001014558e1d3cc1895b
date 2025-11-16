@@ -1,0 +1,25 @@
+/*
+ * traffic_light_advance.c
+ *
+ *  Created on: Nov 5, 2025
+ *      Author: ASUS
+ */
+
+#include "traffic_light_stop.h"
+
+void fsm_traffic_stop(){
+	if(system_state != STOP_MODE) return;
+	switch(status_stop){
+	case INIT_STOP_ROAD:
+		break;
+	case SELECT_ROAD:
+		break;
+	case INIT_ROAD1:
+		break;
+	case ROAD1:
+		break;
+	case INIT_ROAD2:
+		break;
+	case
+	}
+}

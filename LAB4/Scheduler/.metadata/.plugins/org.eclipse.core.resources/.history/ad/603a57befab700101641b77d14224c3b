@@ -1,0 +1,69 @@
+/*
+ * traffic_light.h
+ *
+ *  Created on: Sep 26, 2025
+ *      Author: ASUS
+ */
+
+#ifndef INC_TRAFFIC_LIGHT_H_
+#define INC_TRAFFIC_LIGHT_H_
+
+#include "main.h"
+#include "button.h"
+#include "led_display.h"
+#include "software_timer.h"
+#include "common.h"
+enum {
+	INIT,
+	RED_GRE,
+	RED_YEL,
+	GRE_RED,
+	YEL_RED,
+	BTN0_RED,
+	BTN0_YEL,
+	BTN0_GRE,
+	INIT_MODE2,
+	INIT_MODE3,
+	INIT_MODE4,
+	BTN1_RED,
+	BTN1_YEL,
+	BTN1_GRE,
+	BTN2_RED,
+	BTN2_YEL,
+	BTN2_GRE
+};
+extern uint8_t gre_time ;
+extern uint8_t red_time ;
+extern uint8_t yel_time ;
+
+extern uint8_t gre_temp_time;
+extern uint8_t red_temp_time;
+extern uint8_t yel_temp_time;
+
+
+extern uint8_t TRAFFIC_LIGHT_STATUS;
+
+
+void traffic_light_automatic();
+
+void traffic_red0_gre1();
+void traffic_red0_yel1();
+void traffic_gre0_red1();
+void traffic_yel0_red1();
+
+void behaviors_mode2();
+void behaviors_mode3();
+void behaviors_mode4();
+
+
+void init_traffic();
+void init_mode2();
+void init_mode3();
+void init_mode4();
+
+void update_change_red();
+void update_change_yel();
+void update_change_gre();
+
+void turn_off_all_led();
+#endif /* INC_TRAFFIC_LIGHT_H_ */

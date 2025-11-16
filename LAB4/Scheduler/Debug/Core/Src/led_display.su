@@ -1,0 +1,6 @@
+../Core/Src/led_display.c:16:6:disable_led7_seg	8	static
+../Core/Src/led_display.c:22:6:enable_led7_seg	16	static
+../Core/Src/led_display.c:53:6:update_led7_seg_buffer	4	static
+../Core/Src/led_display.c:60:6:display_4digits	8	static
+../Core/Src/led_display.c:84:6:display_a_digits	16	static
+../Core/Src/led_display.c:91:6:display_number	16	static
