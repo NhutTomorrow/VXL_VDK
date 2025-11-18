@@ -115,16 +115,17 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-//  init_system();
+  init_system();
   	  SCH_init();
-	  SCH_Add_Task(statusLED, 0, 500);
-	  SCH_Add_Task(RED_LED, 0, 500);
+	  SCH_Add_Task(statusLED, 10, 500);
+//	  SCH_Add_Task(RED_LED, 0, 500);
 //	  SCH_Add_Task(GRE_LED, 0, 500);
 //	  SCH_Add_Task(YEL_LED, 0, 500);
-//	  SCH_Add_Task(button_scan_all, 0, 10);
-////	  SCH_Add_Task(fsm_traffic_manual(), 0, 1 );
-//	  SCH_Add_Task(traffic_light_automatic, 0, 1);
-//	  SCH_Add_Task(fsm_traffic_config, 0, 1);
+	  SCH_Add_Task(button_scan_all, 5, 10);
+//	  SCH_Add_Task(timer_run, 0, 1);
+//	  SCH_Add_Task(fsm_traffic_manual(), 0, 1 );
+	  SCH_Add_Task(traffic_light_automatic, 0, 10);
+	  SCH_Add_Task(fsm_traffic_config, 0, 1);
 
 
   /* USER CODE END 2 */
@@ -181,10 +182,10 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
-	if(htim -> Instance == TIM2){
-		SCH_Update();
+
 		timer_run();
-	}
+		SCH_Update();
+
 }
 void init_system(){
 	 HAL_TIM_Base_Start_IT(&htim2);

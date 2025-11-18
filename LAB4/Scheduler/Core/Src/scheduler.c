@@ -14,72 +14,69 @@
 //SCH_Task_Head = 0;
 //SCH_Due_Task_head = 0;
 //SCH_Due_Task_tail = 0;
-sTask* SCH_Task_Head = 0;
 
-sTask* SCH_Due_Task_head = 0;
-sTask* SCH_Due_Task_tail = 0;
+
+
+	sTask* SCH_Task_Head = NULL;
+
+
+
 void SCH_init(void){
-	SCH_Task_Head = NULL;
-
+	SCH_Task_Head  = NULL;
 //	Error_Code_G = 0;
-	timer_Init();
+//	timer_Init();
 	//WatchDog_init();
 }
 void SCH_Update(void){
 	if(SCH_Task_Head == 0 ){
 		return;
 	}
-	if(SCH_Task_Head -> Delay > 0){
+	if(SCH_Task_Head -> Delay == 0){
+		SCH_Task_Head -> RunMe ++;
+		sTask* temp = SCH_Task_Head;
+		while(temp -> pNext != NULL && temp -> pNext -> Delay == 0){
+			temp = temp -> pNext;
+			temp -> RunMe ++;
+		}
+	}
+	else
+	{
 		SCH_Task_Head -> Delay --;
 	}
-	while(SCH_Task_Head != 0  && SCH_Task_Head -> Delay == 0 ){
-		sTask* SCH_Due_Task = 0;
 
-		SCH_Due_Task = SCH_Task_Head;
-		SCH_Task_Head = SCH_Task_Head -> pNext;
-
-		SCH_Due_Task -> RunMe ++;
-		if(SCH_Due_Task_head == 0){
-			SCH_Due_Task_head = SCH_Due_Task;
-			SCH_Due_Task_tail = SCH_Due_Task;
-		} else {
-			SCH_Due_Task_tail -> pNext = SCH_Due_Task;
-			SCH_Due_Task_tail = SCH_Due_Task;
-		}
-		SCH_Due_Task -> pNext  = 0;
-	}
 
 
 }
 void SCH_Dispatch_Task(void){
-	if(SCH_Due_Task_head == 0){
-//		SCH_Go_To_Sleep();
+	if(SCH_Task_Head == NULL){
 		return;
 	}
-		sTask* SCH_Due_Task = SCH_Due_Task_head;
-		SCH_Due_Task_head = SCH_Due_Task_head -> pNext;
-
-		if(SCH_Due_Task_head == 0) SCH_Due_Task_tail = 0; // because SCH_head = SCH_tail when have <= 1 ready task
 
 
-		if(SCH_Due_Task -> RunMe > 0){
-			(* SCH_Due_Task->pTask)();
-			SCH_Due_Task -> RunMe = 0;
+	if(SCH_Task_Head -> RunMe > 0){
+		(*SCH_Task_Head -> pTask )();
+		SCH_Task_Head -> RunMe --;
 
-			if(SCH_Due_Task -> Period == 0){
-				SCH_Delete_Task(SCH_Due_Task);
-			}
-			else {
+		sTask* SCH_Temp = SCH_Task_Head;
+		SCH_Task_Head = SCH_Task_Head -> pNext;
 
-				SCH_Add_Task(SCH_Due_Task -> pTask, SCH_Due_Task -> Period , SCH_Due_Task -> Period);
-				SCH_Delete_Task(SCH_Due_Task);
-			}
+		if(SCH_Temp -> Period != 0){
+			SCH_Add_Task(SCH_Temp -> pTask,	 SCH_Temp -> Period	, SCH_Temp -> Period);
+			free(SCH_Temp);
 		}
+		else {
+
+
+			free(SCH_Temp);
+		}
+
+
+	}
 
 //	SCH_Report_Status();
 //	SCH_Go_To_Sleep();
 }
-void SCH_Add_Task(void(* pFunction)(), uint32_t DELAY, uint32_t PERIOD){
+ void SCH_Add_Task(void(* pFunction)(), uint32_t DELAY, uint32_t PERIOD){
 //		sTask* newTask(pFunction, DELAY, PERIOD); // error
 	// 1. Tạo task mới
 		sTask* pNewTask = (sTask*)malloc(sizeof(sTask));
@@ -87,7 +84,7 @@ void SCH_Add_Task(void(* pFunction)(), uint32_t DELAY, uint32_t PERIOD){
 		pNewTask -> Delay = DELAY;
 		pNewTask -> Period = PERIOD;
 		pNewTask -> pNext = 0;
-
+		pNewTask -> RunMe = 0;
 	    // 2. TRƯỜNG HỢP 1: Danh sách rỗng
 		if (SCH_Task_Head == NULL) {
 			SCH_Task_Head = pNewTask;
@@ -149,15 +146,18 @@ void SCH_Delete_Task(sTask* task){
 		while(pCur != NULL){
 			if(pCur == task){
 				if(pPrev == NULL){
+
 					SCH_Task_Head = pCur -> pNext;
+					if(SCH_Task_Head != NULL){
+						SCH_Task_Head ->Delay += pCur ->Delay;
+					}
 				}
 				else {
 					//update waiting list
-					if(pCur -> pNext != 0){
-						sTask* pAfter = pCur -> pNext;
-						pAfter -> Delay += pCur -> Delay;
+					pPrev->pNext = pCur->pNext;
+					if(pCur->pNext != NULL){
+						pCur->pNext->Delay += pCur->Delay; // <--- QUAN TRỌNG: Cộng dồn Delay
 					}
-					pPrev -> pNext = pCur -> pNext;
 				}
 
 
@@ -170,28 +170,7 @@ void SCH_Delete_Task(sTask* task){
 			pCur = pCur -> pNext;
 		}
 
-		// No Find in waiting list. Continute find in ready list
 
-		pCur = SCH_Due_Task_head;
-		pPrev = NULL;
-
-		while(pCur != NULL){
-			if(pCur == task){
-				if(pPrev == NULL){
-					SCH_Due_Task_head = pCur -> pNext;
-				}
-				else
-				{
-					pPrev -> pNext = pCur -> pNext;
-				}
-
-				if(pCur == SCH_Due_Task_tail){
-					SCH_Due_Task_tail = pPrev;
-				}
-				free(pCur);
-				return;
-			}
-		}
 		//ERROR_G
 		//return ERROR_STATUS
 
